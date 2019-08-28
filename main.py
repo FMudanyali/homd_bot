@@ -5,32 +5,35 @@ from time import sleep
 
 
 def start(bot,api,track_txt,pages_txt,which_chat):
-
+    #open files and parse them into lists
     track_file = open(track_txt,'r+')
     pages_file = open(pages_txt,'r')
-
     track = track_file.read().split('\n')
     pages = pages_file.read().split('\n')
-
     track_file.close()
     pages_file.close()
-    print(track)
-
+    #for each user in pages list
     for user in pages:
+        #get first 10 tweets
         new_tweets = api.user_timeline(screen_name = user,count=10)
+        #for each tweet if these tweets are not in the track list
         for tweet in new_tweets:
             if str(tweet.id) not in track:
+                #add this tweet id to track list so it wont get sent next time
                 track.append(tweet.id)
                 track_file = open(track_txt,'a')
                 track_file.write(f"{tweet.id}\n")
                 track_file.close()
+                #download via youtube-dl
                 print(f"downloading {tweet.id} from {user}")
                 os.system(f"youtube-dl -i -o 'videos/{tweet.id}.mp4' 'https://twitter.com/{user}/status/{tweet.id}'")
                 print(f"sending {tweet.id} from {user}")
+                #try sending it to telegram chat
                 try:
                     bot.send_video(chat_id=which_chat,video=open(f"videos/{tweet.id}.mp4", 'rb'), supports_streaming=True, timeout=10000)
                 except:
                     continue
+                #remove the video since its not needed anymore
                 print(f"removing {tweet.id} from {user}")
                 os.system(f"rm videos/{tweet.id}.mp4")
 
