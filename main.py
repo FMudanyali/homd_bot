@@ -6,18 +6,23 @@ from time import sleep
 
 def start(bot,api,track_txt,pages_txt,which_chat):
 
-    track_file = open(track_txt,'w+')
-    pages_file = open(pages_txt,'r+')
+    track_file = open(track_txt,'r+')
+    pages_file = open(pages_txt,'r')
 
     track = track_file.readlines()
     pages = pages_file.readlines()
+
+    track_file.close()
+    pages_file.close()
 
     for user in pages:
         new_tweets = api.user_timeline(screen_name = user,count=10)
         for tweet in new_tweets:
             if tweet not in track:
                 track.append(tweet.id)
+                track_file = open(track_txt,'a')
                 track_file.write(f"{tweet.id}\n")
+                track_file.close()
                 print(f"downloading {tweet.id} from {user}")
                 os.system(f"youtube-dl -i -o 'videos/{tweet.id}.mp4' 'https://twitter.com/{user}/status/{tweet.id}'")
                 print(f"sending {tweet.id} from {user}")
@@ -27,9 +32,6 @@ def start(bot,api,track_txt,pages_txt,which_chat):
                     continue
                 print(f"removing {tweet.id} from {user}")
                 os.system(f"rm videos/{tweet.id}.mp4")
-
-    track_file.close()
-    pages_file.close()
 
 def main():
     global bot_token,access_key,access_key_secret,consumer_key,consumer_key_secret,which_chat
