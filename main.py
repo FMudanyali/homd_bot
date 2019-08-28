@@ -19,7 +19,7 @@ def start(bot,api,track_txt,pages_txt,which_chat):
                 track.append(tweet.id)
                 track_file.write(f"{tweet.id}\n")
                 print(f"downloading {tweet.id}")
-                os.system(f"youtube-dl -i -o videos/{tweet.id}.mp4 https://twitter.com/{user}/status/{tweet.id}")
+                os.system(f"/usr/bin/youtube-dl -i -o videos/{tweet.id}.mp4 https://twitter.com/{user}/status/{tweet.id}")
                 print(f"sending {tweet.id}")
                 try:
                     bot.send_video(chat_id=which_chat,video=open(f"videos/{tweet.id}.mp4", 'rb'), supports_streaming=True, timeout=10000)
