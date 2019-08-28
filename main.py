@@ -18,14 +18,14 @@ def start(bot,api,track_txt,pages_txt,which_chat):
             if tweet not in track:
                 track.append(tweet.id)
                 track_file.write(f"{tweet.id}\n")
-                print(f"downloading {tweet.id}")
+                print(f"downloading {tweet.id} from {user}")
                 os.system(f"youtube-dl -i -o 'videos/{tweet.id}.mp4' 'https://twitter.com/{user}/status/{tweet.id}'")
-                print(f"sending {tweet.id}")
+                print(f"sending {tweet.id} from {user}")
                 try:
                     bot.send_video(chat_id=which_chat,video=open(f"videos/{tweet.id}.mp4", 'rb'), supports_streaming=True, timeout=10000)
                 except:
                     continue
-                print(f"removing {tweet.id}")
+                print(f"removing {tweet.id} from {user}")
                 os.system(f"rm videos/{tweet.id}.mp4")
 
     track_file.close()
