@@ -9,16 +9,17 @@ def start(bot,api,track_txt,pages_txt,which_chat):
     track_file = open(track_txt,'r+')
     pages_file = open(pages_txt,'r')
 
-    track = track_file.readlines()
-    pages = pages_file.readlines()
+    track = track_file.read().split('\n')
+    pages = pages_file.read().split('\n')
 
     track_file.close()
     pages_file.close()
+    print(track)
 
     for user in pages:
         new_tweets = api.user_timeline(screen_name = user,count=10)
         for tweet in new_tweets:
-            if tweet not in track:
+            if str(tweet.id) not in track:
                 track.append(tweet.id)
                 track_file = open(track_txt,'a')
                 track_file.write(f"{tweet.id}\n")
