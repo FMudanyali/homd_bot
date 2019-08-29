@@ -1,4 +1,4 @@
-import os
+import os,pickle
 from credentials import *
 from tweepy import OAuthHandler,API,Cursor
 from time import sleep
@@ -48,12 +48,18 @@ def call_memes(bot,context):
 
 def download_memes(bot,api,track_txt,pages_txt,which_chat):
     #open files and parse them into lists
-    track_file = open(track_txt,'r+')
-    pages_file = open(pages_txt,'r')
+    track_file = open(track_txt,'rb+')
+    pages_file = open(pages_txt,'rb+')
+    videos_file = open('videos.pckl', 'rb+')
+    videos = pickle.load(videos_file)
+    #start with 0 if videos.pckl is just created
+    if not str(videos).isdigit(): videos=0
     track = track_file.read().split('\n')
     pages = pages_file.read().split('\n')
+    videos_file.close()
     track_file.close()
     pages_file.close()
+
     #for each user in pages list
     for user in pages:
         #get first 10 tweets
@@ -67,27 +73,35 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
                 track_file.write(f"{tweet.id}\n")
                 track_file.close()
                 #download via youtube-dl
-                print(f"downloading {tweet.id} from {user}")
-                os.system(f"youtube-dl -i -o 'videos/{tweet.id}.mp4' 'https://twitter.com/{user}/status/{tweet.id}'")
+                print(f"downloading {tweet.id} from {user}") 
+                try:
+                    #os.system(f"youtube-dl -o 'videos/{tweet.id}.mp4' 'https://twitter.com/{user}/status/{tweet.id}'")
+                    videos+=1
+                except:
+                    continue
                 print(f"sending {tweet.id} from {user}")
                 #try sending it to telegram chat
                 try:
-                    bot.send_video(chat_id=which_chat,video=open(f"videos/{tweet.id}.mp4", 'rb'), supports_streaming=True, timeout=10000)
+                    continue
+                     #bot.send_video(chat_id=which_chat,video=open(f"videos/{tweet.id}.mp4", 'rb'), supports_streaming=True, timeout=10000)
                 except:
                     continue
                 #remove the video since its not needed anymore
                 print(f"removing {tweet.id} from {user}")
                 os.system(f"rm videos/{tweet.id}.mp4")
+    videos_file=open('videos.pckl', 'wb')
+    pickle.dump(videos, videos_file)
+    videos_file.close()
 
 def videos_sent(bot,context):
     global which_chat
     #read the track file
-    track_file = open('track.txt','r+')
-    track = track_file.read().split('\n')
-    track_file.close()
+    videos_file = open('videos.pckl', 'rb+')
+    videos = pickle.load(videos_file)
+    videos_file.close()
     #get user name
     user = context.message.from_user.first_name
-    bot.send_message(chat_id=which_chat,text=f"{len(track)} videos has been sent so far, {user}.")
+    bot.send_message(chat_id=which_chat,text=f"{videos} videos has been sent so far, {user}.")
 
 def main():
     global bot_token,which_chat
