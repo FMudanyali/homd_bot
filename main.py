@@ -107,8 +107,8 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
 def videos_sent(bot,context):
     global which_chat
     #read the track file
-    videos_file = open('videos.pckl', 'rb+')
-    videos = pickle.load(videos_file)
+    videos_file = open('videostrack.txt', 'r')
+    videos = int(videos_file.read())
     videos_file.close()
     #get user name
     user = context.message.from_user.first_name
