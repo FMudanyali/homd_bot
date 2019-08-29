@@ -127,7 +127,7 @@ def main():
     dispatcher.add_handler(CommandHandler('memeinfo',videos_sent))
     #set the job
     j = bot_updater.job_queue
-    memes = j.run_repeating(call_memes, interval=1800, first=0)
+    j.run_repeating(call_memes, interval=1800, first=0)
     #listen to commands
     bot_updater.start_polling()
     bot_updater.idle()
