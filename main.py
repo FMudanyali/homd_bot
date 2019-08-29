@@ -57,7 +57,7 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
     track_file = open(track_txt,'rb+')
     pages_file = open(pages_txt,'rb+')
     if not os.path.exists('video.pckl'):
-        videos_file = open('videos.pckl', 'w+')
+        videos_file = open('videos.pckl', 'wb+')
         videos = 0
         pickle.dump(videos, videos_file)
         videos_file.close()
