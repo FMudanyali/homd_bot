@@ -110,6 +110,7 @@ def videos_sent(bot,context):
     print("Got track request.")
     videos_file = open('videostrack.txt', 'r')
     videos = videos_file.read()
+    print(f"It's {videos}")
     videos_file.close()
     #get user name
     print("Sending track request.")
