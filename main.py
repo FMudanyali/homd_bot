@@ -112,7 +112,7 @@ def videos_sent(bot,context):
     videos_file.close()
     #get user name
     user = context.message.from_user.first_name
-    bot.send_message(chat_id=which_chat,text=f"{videos} videos has been sent so far, {user}.")
+    bot.send_message(chat_id=which_chat,text=f"{videos} videos have been sent so far, {user}.")
 
 def main():
     global bot_token,which_chat
@@ -124,7 +124,7 @@ def main():
     dispatcher.add_handler(CommandHandler('memeinfo',videos_sent))
     #set the job
     j = bot_updater.job_queue
-    memes = j.run_repeating(call_memes, interval=900, first=0)
+    memes = j.run_repeating(call_memes, interval=1800, first=0)
     #listen to commands
     bot_updater.start_polling()
     bot_updater.idle()
