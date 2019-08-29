@@ -79,6 +79,16 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
                 print(f"removing {tweet.id} from {user}")
                 os.system(f"rm videos/{tweet.id}.mp4")
 
+def videos_sent(bot,context):
+    global which_chat
+    #read the track file
+    track_file = open('track.txt','r+')
+    track = track_file.read().split('\n')
+    track_file.close()
+    #get user name
+    user = context.message.from_user.first_name
+    bot.send_message(chat_id=which_chat,text=f"{len(track)} videos has been sent so far, {user}.")
+
 def main():
     global bot_token,which_chat
     #initialize bot
@@ -86,6 +96,7 @@ def main():
     dispatcher = bot_updater.dispatcher
     #add commands to listen to and their respectful functions
     dispatcher.add_handler(CommandHandler('banefe',kick_efe))
+    dispatcher.add_handler(CommandHandler('memeinfo',videos_sent))
     #set the job
     j = bot_updater.job_queue
     memes = j.run_repeating(call_memes, interval=900, first=0)
