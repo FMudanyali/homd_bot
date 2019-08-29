@@ -47,24 +47,25 @@ def call_memes(bot,context):
     print("Made a meme check.")
 
 def download_memes(bot,api,track_txt,pages_txt,which_chat):
-    #open files and parse them into lists
+    #create files if they don't exist
     if not os.path.exists(track_txt):
         track_file = open(track_txt,'w+')
         track_file.close()
+
     if not os.path.exists(pages_txt):
         pages_file = open(pages_txt,'w+')
         pages_file.close()
-    track_file = open(track_txt,'r+')
-    pages_file = open(pages_txt,'r+')
+
     if not os.path.exists('video.pckl'):
         videos_file = open('videos.pckl', 'wb+')
         videos = 0
         pickle.dump(videos, videos_file)
         videos_file.close()
-
+    #open files and track them into lists, variable in pickle's case
+    track_file = open(track_txt,'r+')
+    pages_file = open(pages_txt,'r+')
     videos_file = open('videos.pckl', 'rb+')
     videos = pickle.load(videos_file)
-    #start with 0 if videos.pckl is just created
     track = track_file.read().split('\n')
     pages = pages_file.read().split('\n')
     videos_file.close()
@@ -86,15 +87,14 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
                 #download via youtube-dl
                 print(f"downloading {tweet.id} from {user}") 
                 try:
-                    #os.system(f"youtube-dl -o 'videos/{tweet.id}.mp4' 'https://twitter.com/{user}/status/{tweet.id}'")
+                    os.system(f"youtube-dl -o 'videos/{tweet.id}.mp4' 'https://twitter.com/{user}/status/{tweet.id}'")
                     videos+=1
                 except:
                     continue
                 print(f"sending {tweet.id} from {user}")
                 #try sending it to telegram chat
                 try:
-                    continue
-                     #bot.send_video(chat_id=which_chat,video=open(f"videos/{tweet.id}.mp4", 'rb'), supports_streaming=True, timeout=10000)
+                     bot.send_video(chat_id=which_chat,video=open(f"videos/{tweet.id}.mp4", 'rb'), supports_streaming=True, timeout=10000)
                 except:
                     continue
                 #remove the video since its not needed anymore
