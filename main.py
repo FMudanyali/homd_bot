@@ -54,8 +54,8 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
     if not os.path.exists(pages_txt):
         pages_file = open(pages_txt,'w+')
         pages_file.close()
-    track_file = open(track_txt,'rb+')
-    pages_file = open(pages_txt,'rb+')
+    track_file = open(track_txt,'r+')
+    pages_file = open(pages_txt,'r+')
     if not os.path.exists('video.pckl'):
         videos_file = open('videos.pckl', 'wb+')
         videos = 0
