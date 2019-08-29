@@ -48,12 +48,23 @@ def call_memes(bot,context):
 
 def download_memes(bot,api,track_txt,pages_txt,which_chat):
     #open files and parse them into lists
+    if not os.path.exists(track_txt):
+        track_file = open(track_txt,'w+')
+        track_file.close()
+    if not os.path.exists(pages_txt):
+        pages_file = open(pages_txt,'w+')
+        pages_file.close()
     track_file = open(track_txt,'rb+')
     pages_file = open(pages_txt,'rb+')
+    if not os.path.exists('video.pckl'):
+        videos_file = open('videos.pckl', 'w+')
+        videos = 0
+        pickle.dump(videos, videos_file)
+        videos_file.close()
+
     videos_file = open('videos.pckl', 'rb+')
     videos = pickle.load(videos_file)
     #start with 0 if videos.pckl is just created
-    if not str(videos).isdigit(): videos=0
     track = track_file.read().split('\n')
     pages = pages_file.read().split('\n')
     videos_file.close()
