@@ -1,7 +1,6 @@
 import os
 from credentials import *
 from tweepy import OAuthHandler,API,Cursor
-from time import sleep
 from random import randint
 from telegram.ext import Updater,CommandHandler
 
