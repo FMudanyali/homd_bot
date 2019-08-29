@@ -108,7 +108,7 @@ def videos_sent(bot,context):
     global which_chat
     #read the track file
     print("Got track request.")
-    videos_file = open('videostrack.txt', 'r')
+    videos_file = open('videotrack.txt', 'r')
     videos = videos_file.read()
     print(f"It's {videos}")
     videos_file.close()
