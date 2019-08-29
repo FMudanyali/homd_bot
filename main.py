@@ -1,4 +1,4 @@
-import os,pickle
+import os
 from credentials import *
 from tweepy import OAuthHandler,API,Cursor
 from time import sleep
@@ -56,16 +56,16 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
         pages_file = open(pages_txt,'w+')
         pages_file.close()
 
-    if not os.path.exists('video.pckl'):
-        videos_file = open('videos.pckl', 'wb+')
+    if not os.path.exists('videotrack.txt'):
+        videos_file = open('videotrack.txt', 'w')
         videos = 0
-        pickle.dump(videos, videos_file)
+        videos_file.write(str(videos))
         videos_file.close()
-    #open files and track them into lists, variable in pickle's case
+    #open files and track them into lists, variable in video track's case
     track_file = open(track_txt,'r+')
     pages_file = open(pages_txt,'r+')
-    videos_file = open('videos.pckl', 'rb+')
-    videos = pickle.load(videos_file)
+    videos_file = open('videotrack.txt', 'r')
+    videos = int(videos_file.read())
     track = track_file.read().split('\n')
     pages = pages_file.read().split('\n')
     videos_file.close()
@@ -85,7 +85,7 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
                 track_file.write(f"{tweet.id}\n")
                 track_file.close()
                 #download via youtube-dl
-                print(f"downloading {tweet.id} from {user}") 
+                print(f"downloading {tweet.id} from {user}")
                 try:
                     os.system(f"youtube-dl -o 'videos/{tweet.id}.mp4' 'https://twitter.com/{user}/status/{tweet.id}'")
                 except:
@@ -100,8 +100,8 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
                 print(f"removing {tweet.id} from {user}")
                 if os.path.exists(f"videos/{tweet.id}.mp4"): videos += 1
                 os.system(f"rm videos/{tweet.id}.mp4")
-    videos_file=open('videos.pckl', 'wb')
-    pickle.dump(videos, videos_file)
+    videos_file=open('videotrack.txt', 'w')
+    videos_file.write(str(videos))
     videos_file.close()
 
 def videos_sent(bot,context):
