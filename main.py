@@ -1,4 +1,4 @@
-import os,telegram
+import os
 from credentials import *
 from tweepy import OAuthHandler,API,Cursor
 from time import sleep
@@ -6,37 +6,47 @@ from random import randint
 from telegram.ext import Updater,CommandHandler
 
 def kick_efe(bot,context):
+    #get who issued this command
     user = context.message.from_user.id
+    #get homd's admins
     admins = [admin.user.id for admin in bot.get_chat_administrators(chat_id=which_chat)]
+    #check if this person is an admin
     if user in admins:
+        #select one of few ban messages
         message_file = open('ban_messages.txt','r+')
         ban_messages = message_file.read().split('\n')
         message_file.close()
         ban_message=ban_messages[randint(0,len(ban_messages))]
+        #select efe
         efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
+        #check if efe is available
         if efe.status in ['member','restricted']:
             try:
+                #kick him and unban him, so he can rejoin. Also send the ban message.
                 bot.kickChatMember(chat_id=which_chat,user_id=189748641)
                 bot.unbanChatMember(chat_id=which_chat,user_id=189748641)
                 bot.send_message(chat_id=which_chat,text=ban_message)
             except:
                 return False
         else:
+            #He's already gone.
             bot.send_message(chat_id=which_chat,text="The dipshit is in another castle.")
     else:
+        #Refuse if this person is not an admin.
         bot.send_message(chat_id=which_chat,text="You're not an admin, fuckboy.")
 
-def call(bot,context):
+def call_memes(bot,context):
     global access_key,access_key_secret,consumer_key,consumer_key_secret
-
+    #initialize twitter
     auth = OAuthHandler(consumer_key, consumer_key_secret)
     auth.set_access_token(access_key, access_key_secret)
     api = API(auth)
+    #call the meme downloading function
+    download_memes(bot,api,'track.txt','pages.txt',which_chat)
 
-    start(bot,api,'track.txt','pages.txt',which_chat)
     print("Made a meme check.")
 
-def start(bot,api,track_txt,pages_txt,which_chat):
+def download_memes(bot,api,track_txt,pages_txt,which_chat):
     #open files and parse them into lists
     track_file = open(track_txt,'r+')
     pages_file = open(pages_txt,'r')
@@ -72,16 +82,14 @@ def start(bot,api,track_txt,pages_txt,which_chat):
 def main():
     global bot_token,which_chat
     #initialize bot
-    bot = telegram.Bot(bot_token)
-
     bot_updater = Updater(token=bot_token)
     dispatcher = bot_updater.dispatcher
+    #add commands to listen to and their respectful functions
     dispatcher.add_handler(CommandHandler('banefe',kick_efe))
-    
-    #initialize twitter
-    #run the code
+    #set the job
     j = bot_updater.job_queue
-    memes = j.run_repeating(call, interval=900, first=0)
+    memes = j.run_repeating(call_memes, interval=900, first=0)
+    #listen to commands
     bot_updater.start_polling()
     bot_updater.idle()
 
