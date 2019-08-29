@@ -88,7 +88,6 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
                 print(f"downloading {tweet.id} from {user}") 
                 try:
                     os.system(f"youtube-dl -o 'videos/{tweet.id}.mp4' 'https://twitter.com/{user}/status/{tweet.id}'")
-                    videos+=1
                 except:
                     continue
                 print(f"sending {tweet.id} from {user}")
@@ -99,6 +98,7 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
                     continue
                 #remove the video since its not needed anymore
                 print(f"removing {tweet.id} from {user}")
+                if os.path.exists(f"rm videos/{tweet.id}.mp4"): videos += 1
                 os.system(f"rm videos/{tweet.id}.mp4")
     videos_file=open('videos.pckl', 'wb')
     pickle.dump(videos, videos_file)
