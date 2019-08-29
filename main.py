@@ -98,7 +98,7 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
                     continue
                 #remove the video since its not needed anymore
                 print(f"removing {tweet.id} from {user}")
-                if os.path.exists(f"rm videos/{tweet.id}.mp4"): videos += 1
+                if os.path.exists(f"videos/{tweet.id}.mp4"): videos += 1
                 os.system(f"rm videos/{tweet.id}.mp4")
     videos_file=open('videos.pckl', 'wb')
     pickle.dump(videos, videos_file)
