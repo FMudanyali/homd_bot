@@ -12,6 +12,7 @@ def kick_efe(bot,context):
     #check if this person is an admin
     if user in admins:
         #select one of few ban messages
+        username = context.message.from_user.first_name
         message_file = open('ban_messages.txt','r+')
         ban_messages = message_file.read().split('\n')
         message_file.close()
@@ -24,7 +25,7 @@ def kick_efe(bot,context):
                 #kick him and unban him, so he can rejoin. Also send the ban message.
                 bot.kickChatMember(chat_id=which_chat,user_id=189748641)
                 bot.unbanChatMember(chat_id=which_chat,user_id=189748641)
-                bot.send_message(chat_id=which_chat,text=ban_message)
+                bot.send_message(chat_id=which_chat,text=ban_message.format(username))
             except:
                 return False
         else:
