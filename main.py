@@ -21,7 +21,9 @@ def kick_efe(bot,context):
         ban_messages = message_file.read().split('\n')
         message_file.close()
         print("Read it in an array")
+        print(ban_messages)
         ban_message=ban_messages[randint(0,len(ban_messages))]
+        print(ban_message)
         print("Picked one")
         #select efe
         efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
