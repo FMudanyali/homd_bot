@@ -15,26 +15,19 @@ def kick_efe(bot,context):
         print("User is admin")
         #select one of few ban messages
         username = context.message.from_user.first_name
-        print("Got their name")
         message_file = open('ban_messages.txt','r+')
-        print("Opened message file")
         ban_messages = message_file.read().split('\n')
         message_file.close()
-        print("Read it in an array")
-        print(ban_messages)
         if len(ban_messages) > 2:
             ban_message=ban_messages[randint(0,len(ban_messages))]
         else:
             ban_message=ban_messages[0]
-        print(ban_message)
-        print("Picked one")
         #select efe
         efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
         #check if efe is available
         if efe.status in ['member','restricted']:
             try:
                 #kick him and unban him, so he can rejoin. Also send the ban message.
-                print("Tryna kick")
                 bot.kickChatMember(chat_id=which_chat,user_id=189748641)
                 bot.unbanChatMember(chat_id=which_chat,user_id=189748641)
                 bot.send_message(chat_id=which_chat,text=ban_message.format(username))
@@ -128,7 +121,6 @@ def videos_sent(bot,context):
     print(f"It's {videos}")
     videos_file.close()
     #get user name
-    print("Sending track request.")
     user = context.message.from_user.first_name
     bot.send_message(chat_id=which_chat,text=f"{videos} videos have been sent so far, {user}.")
     print("Sent track request.")
