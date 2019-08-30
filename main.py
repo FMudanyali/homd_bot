@@ -22,7 +22,10 @@ def kick_efe(bot,context):
         message_file.close()
         print("Read it in an array")
         print(ban_messages)
-        ban_message=ban_messages[randint(0,len(ban_messages))]
+        if len(ban_messages) > 2:
+            ban_message=ban_messages[randint(0,len(ban_messages))]
+        else:
+            ban_message=ban_messages[0]
         print(ban_message)
         print("Picked one")
         #select efe
