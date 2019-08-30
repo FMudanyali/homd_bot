@@ -5,12 +5,14 @@ from random import randint
 from telegram.ext import Updater,CommandHandler
 
 def kick_efe(bot,context):
+    print("Got ban request")
     #get who issued this command
     user = context.message.from_user.id
     #get homd's admins
     admins = [admin.user.id for admin in bot.get_chat_administrators(chat_id=which_chat)]
     #check if this person is an admin
     if user in admins:
+        print("User is admin")
         #select one of few ban messages
         username = context.message.from_user.first_name
         message_file = open('ban_messages.txt','r+')
@@ -26,13 +28,16 @@ def kick_efe(bot,context):
                 bot.kickChatMember(chat_id=which_chat,user_id=189748641)
                 bot.unbanChatMember(chat_id=which_chat,user_id=189748641)
                 bot.send_message(chat_id=which_chat,text=ban_message.format(username))
+                print("He's gone")
             except:
                 return False
         else:
             #He's already gone.
             bot.send_message(chat_id=which_chat,text="The dipshit is in another castle.")
+            print("He was already gone")
     else:
         #Refuse if this person is not an admin.
+        print("User not admin")
         bot.send_message(chat_id=which_chat,text="You're not an admin, fuckboy.")
 
 def call_memes(bot,context):
