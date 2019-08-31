@@ -46,7 +46,7 @@ def efe_tracker(bot,context):
         efe_file.write(str(time()))
         efe_file.close()
     efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
-    open('efe_file.txt', 'r')
+    efe_file = open('efe_file.txt', 'r')
     start_time = int(efe_file.read())
     efe_file.close()
     if efe.status in ['member','restricted']:
