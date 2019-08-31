@@ -42,7 +42,7 @@ def kick_efe(bot,context):
 
 def efe_tracker(bot,context):
     if not os.path.exists('efe_file.txt'):
-        efe_file = track_file = open('efe_file.txt','w+')
+        efe_file = open('efe_file.txt','w+')
         efe_file.write(str(time()))
         efe_file.close()
     efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
