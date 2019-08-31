@@ -41,13 +41,13 @@ def kick_efe(bot,context):
         bot.send_message(chat_id=which_chat,text="You're not an admin, fuckboy.")
 
 def efe_tracker(bot,context):
-    if not os.path.exists('efe_file.txt'):
+    if not os.path.exists('efe_file.txt')
         efe_file = open('efe_file.txt','w+')
         efe_file.write(str(time()))
         efe_file.close()
     efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
     efe_file = open('efe_file.txt', 'r')
-    start_time = int(efe_file.read())
+    start_time = float(efe_file.read())
     efe_file.close()
     if efe.status in ['member','restricted']:
         elapsed_time = time() - start_time
