@@ -22,11 +22,11 @@ def main():
     dispatcher = bot_updater.dispatcher
     #add commands to listen to and their respectful functions
     dispatcher.add_handler(CommandHandler('banefe',kick_efe))
+    dispatcher.add_handler(CommandHandler('efeinfo',efe_tracker))
     dispatcher.add_handler(CommandHandler('memeinfo',videos_sent))
     #set the job
     j = bot_updater.job_queue
     j.run_repeating(call_memes, interval=1800, first=0)
-    j.run_repeating(efe_tracker, interval=1620, first=0)
     #listen to commands
     bot_updater.start_polling()
     bot_updater.idle()
