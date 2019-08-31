@@ -82,7 +82,7 @@ def efe_info(bot,context):
         if elapsed_time > record_time:
             record_time = elapsed_time
             record_file = open('record_file.txt','w')
-            record_file.write(record_time)
+            record_file.write(str(record_time))
             record_file.close()
         rc_hour = int(record_time // 3600)
         rc_minute = int(record_time % 3600 // 60)
