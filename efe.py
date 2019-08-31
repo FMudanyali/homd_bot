@@ -77,7 +77,7 @@ def efe_info(bot,context):
         if hour == 0: fm_hour=""
         else: fm_hour = f"{hour} hours and " if hour>1 else "an hour and "
         fm_minute = f"{minute} minutes" if minute>1 else "a minute"
-        return True
+        return True,fm_hour,fm_minute
     else:
         try: elapsed_time
         except: elapsed_time=0
@@ -95,10 +95,11 @@ def efe_info(bot,context):
         efe_file = open('efe_file.txt','w+')
         efe_file.write(str(time()))
         efe_file.close()
-        return False
+        return False,fmrc_hour,fmrc_minute
 
 def efe_tracker(bot,context):
-    if efe_info(bot,context):
-        bot.send_message(chat_id=which_chat,text=f"Efe hasn't been kicked for {fm_hour}{fm_minute}.")
+    status,hour,minute = efe_info(bot,context)
+    if status:
+        bot.send_message(chat_id=which_chat,text=f"Efe hasn't been kicked for {hour}{minute}.")
     else:
-        bot.send_message(chat_id=which_chat,text=f"Efe is gone. His record time is {fmrc_hour}{fmrc_minute}.")
+        bot.send_message(chat_id=which_chat,text=f"Efe is gone. His record time is {hour}{minute}.")
