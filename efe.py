@@ -42,16 +42,15 @@ def kick_efe(bot,context):
 
 def efe_record(bot,context):
     efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
-    if efe.status in ['member','restricted']:
-        if not os.path.exists('efe_file.txt'):
-            efe_file = open('efe_file.txt','w+')
-            efe_file.write(str(time()))
-            efe_file.close()
-        if not os.path.exists('record_file.txt'):
-            record_file = open('record_file.txt','w+')
-            record_file.write("0")
-            record_file.close()
-
+    record_file = open('record_file.txt', 'r')
+    record_time = float(record_file.read())
+    record_file.close()
+    rc_hour = int(record_time // 3600)
+    rc_minute = int(record_time % 3600 // 60)
+    if rc_hour == 0: fmrc_hour=""
+    else: fmrc_hour = f"{hour} hours and " if rc_hour>1 else "an hour and "
+    fmrc_minute = f"{rc_minute} minutes" if rc_minute>1 else "a minute"
+    bot.send_message(chat_id=which_chat,text=f"His record time is {fmrc_hour}{fmrc_minute}.")
 
 def efe_info(bot,context):
     if not os.path.exists('efe_file.txt'):
@@ -65,7 +64,7 @@ def efe_info(bot,context):
     efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
     efe_file = open('efe_file.txt', 'r')
     record_file = open('record_file.txt', 'r')
-    record_time = int(record_file.read())
+    record_time = float(record_file.read())
     start_time = float(efe_file.read())
     efe_file.close()
     record_file.close()
@@ -79,8 +78,7 @@ def efe_info(bot,context):
         fm_minute = f"{minute} minutes" if minute>1 else "a minute"
         return True,fm_hour,fm_minute
     else:
-        try: elapsed_time
-        except: elapsed_time=0
+        elapsed_time = time() - start_time
         if elapsed_time > record_time:
             record_time = elapsed_time
             record_file = open('record_file.txt','w')
