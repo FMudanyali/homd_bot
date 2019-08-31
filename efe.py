@@ -51,8 +51,8 @@ def efe_tracker(bot,context):
     efe_file.close()
     if efe.status in ['member','restricted']:
         elapsed_time = time() - start_time
-        hour = elapsed_time // 3600
-        minute = elapsed_time % 3600 // 60
+        hour = int(elapsed_time // 3600)
+        minute = int(elapsed_time % 3600 // 60)
         if hour == 0: fm_hour=""
         else: fm_hour = f"{hour} hours and " if hour>1 else "an hour and "
         fm_minute = f"{minute} minutes" if minute>1 else "a minute"
