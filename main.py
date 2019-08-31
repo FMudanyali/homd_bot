@@ -23,6 +23,7 @@ def main():
     #add commands to listen to and their respectful functions
     dispatcher.add_handler(CommandHandler('banefe',kick_efe))
     dispatcher.add_handler(CommandHandler('efeinfo',efe_tracker))
+    dispatcher.add_handler(CommandHandler('eferecord',efe_record))
     dispatcher.add_handler(CommandHandler('memeinfo',videos_sent))
     #set the job
     j = bot_updater.job_queue
