@@ -41,7 +41,7 @@ def kick_efe(bot,context):
         bot.send_message(chat_id=which_chat,text="You're not an admin, fuckboy.")
 
 def efe_tracker(bot,context):
-    if not os.path.exists(track_txt):
+    if not os.path.exists('efe_file.txt'):
         efe_file = track_file = open('efe_file.txt','w+')
         efe_file.write(time())
         efe_file.close()
