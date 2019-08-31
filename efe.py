@@ -47,8 +47,9 @@ def efe_tracker(bot,context):
         elapsed_time = time() - start_time
         hour = elapsed_time // 3600
         minute = elapsed_time % 3600 // 60
-        fm_hour = f"{hour} hours" if hour>1 else "an hour"
+        if hour == 0: fm_hour=""
+        else: fm_hour = f"{hour} hours and" if hour>1 else "an hour and"
         fm_minute = f"{minute} minutes" if minute>1 else "a minute"
-        bot.send_message(chat_id=which_chat,text=f"Efe hasn't been kicked for {fm_hour} and {fm_minute}.")
+        bot.send_message(chat_id=which_chat,text=f"Efe hasn't been kicked for {fm_hour} {fm_minute}.")
     else:
         start_time = time()
