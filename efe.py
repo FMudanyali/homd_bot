@@ -2,6 +2,7 @@ from random import randint
 from telegram.ext import Updater
 import os
 from credentials import *
+from time import time
 
 def kick_efe(bot,context):
     print("Got ban request")
@@ -38,3 +39,16 @@ def kick_efe(bot,context):
         #Refuse if this person is not an admin.
         print("User not admin")
         bot.send_message(chat_id=which_chat,text="You're not an admin, fuckboy.")
+
+def efe_tracker(bot,context):
+    efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
+    start_time = time()
+    if efe.status in ['member','restricted']:
+        elapsed_time = time() - start_time
+        hour = elapsed_time // 3600
+        minute = elapsed_time % 3600 // 60
+        fm_hour = f"{hour} hours" if hour>1 else "an hour"
+        fm_minute = f"{minute} minutes" if minute>1 else "a minute"
+        bot.send_message(chat_id=which_chat,text=f"Efe hasn't been kicked for {fm_hour} and {fm_minute}.")
+    else:
+        start_time = time()

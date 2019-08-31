@@ -26,6 +26,7 @@ def main():
     #set the job
     j = bot_updater.job_queue
     j.run_repeating(call_memes, interval=1800, first=0)
+    j.run_repeating(efe_tracker, interval=1620, first=0)
     #listen to commands
     bot_updater.start_polling()
     bot_updater.idle()
