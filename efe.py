@@ -1,8 +1,10 @@
 from random import randint
 from telegram.ext import Updater
-import os
+import os,logging
 from credentials import *
 from time import time
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                     level=logging.INFO)
 
 def kick_efe(bot,context):
     print("Got ban request")
@@ -52,10 +54,14 @@ def efe_tracker(bot,context):
         record_file.close()
     
     efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
+
     efe_file = open('efe_file.txt', 'r')
+    record_file = open('record_file.txt', 'r')
     record_time = int(record_file.read())
     start_time = float(efe_file.read())
     efe_file.close()
+    record_file.close()
+
     if efe.status in ['member','restricted']:
         elapsed_time = time() - start_time
         hour = int(elapsed_time // 3600)
@@ -65,6 +71,9 @@ def efe_tracker(bot,context):
         fm_minute = f"{minute} minutes" if minute>1 else "a minute"
         bot.send_message(chat_id=which_chat,text=f"Efe hasn't been kicked for {fm_hour}{fm_minute}.")
     else:
+        try: elapsed_time
+        except: elapsed_time=0
+
         if elapsed_time > record_time:
             record_time = elapsed_time
             record_file = open('record_file.txt','w')
@@ -72,11 +81,15 @@ def efe_tracker(bot,context):
             record_file.close()
         rc_hour = int(record_time // 3600)
         rc_minute = int(record_time % 3600 // 60)
+
         if rc_hour == 0: fmrc_hour=""
         else: fmrc_hour = f"{hour} hours and " if rc_hour>1 else "an hour and "
+
         fmrc_minute = f"{rc_minute} minutes" if rc_minute>1 else "a minute"
         os.system("rm efe_file.txt")
+
         bot.send_message(chat_id=which_chat,text=f"Efe is gone. His record time is {fmrc_hour}{fmrc_minute}.")
+        
         efe_file = open('efe_file.txt','w+')
         efe_file.write(str(time()))
         efe_file.close()
