@@ -1,8 +1,6 @@
-import os
 from telegram.ext import Updater,CommandHandler
 from efe import *
 from meme_downloader import *
-from credentials import *
 
 def videos_sent(bot,context):
     global which_chat

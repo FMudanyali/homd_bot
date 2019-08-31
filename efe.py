@@ -1,4 +1,6 @@
 from random import randint
+from telegram.ext import Updater
+import os
 from credentials import *
 
 def kick_efe(bot,context):
