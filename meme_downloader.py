@@ -1,4 +1,5 @@
 from tweepy import OAuthHandler,API,Cursor
+from credentials import *
 
 def call_memes(bot,context):
     global access_key,access_key_secret,consumer_key,consumer_key_secret

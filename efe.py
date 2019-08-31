@@ -1,4 +1,5 @@
 from random import randint
+from credentials import *
 
 def kick_efe(bot,context):
     print("Got ban request")
