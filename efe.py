@@ -76,7 +76,7 @@ def efe_tracker(bot,context):
         else: fmrc_hour = f"{hour} hours and " if rc_hour>1 else "an hour and "
         fmrc_minute = f"{rc_minute} minutes" if rc_minute>1 else "a minute"
         os.system("rm efe_file.txt")
-        bot.send_message(chat_id=which_chat,text=f"Record time is {fmrc_hour}{fmrc_minute}.")
+        bot.send_message(chat_id=which_chat,text=f"Efe is gone. His record time is {fmrc_hour}{fmrc_minute}.")
         efe_file = open('efe_file.txt','w+')
         efe_file.write(str(time()))
         efe_file.close()
