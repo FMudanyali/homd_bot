@@ -48,7 +48,7 @@ def efe_record(bot,context):
     rc_hour = int(record_time // 3600)
     rc_minute = int(record_time % 3600 // 60)
     if rc_hour == 0: fmrc_hour=""
-    else: fmrc_hour = f"{hour} hours and " if rc_hour>1 else "an hour and "
+    else: fmrc_hour = f"{rc_hour} hours and " if rc_hour>1 else "an hour and "
     fmrc_minute = f"{rc_minute} minutes" if rc_minute>1 else "a minute"
     bot.send_message(chat_id=which_chat,text=f"His record time is {fmrc_hour}{fmrc_minute}.")
 
