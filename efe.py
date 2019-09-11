@@ -18,7 +18,7 @@ def kick_efe(bot,context):
         message_file = open('ban_messages.txt','r+')
         ban_messages = message_file.read().split('\n')
         message_file.close()
-        ban_message=ban_messages[randint(0,len(ban_messages))]
+        ban_message=ban_messages[randint(0,len(ban_messages)-1)]
         #select efe
         efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
         #check if efe is available
