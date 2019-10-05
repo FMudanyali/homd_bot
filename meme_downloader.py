@@ -42,7 +42,7 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
     #for each user in pages list
     for user in pages:
         #get first 10 tweets
-        new_tweets = api.user_timeline(screen_name = user,count=30)
+        new_tweets = api.user_timeline(screen_name = user,count=60)
         #for each tweet if these tweets are not in the track list
         for tweet in new_tweets:
             if str(tweet.id) not in track:
