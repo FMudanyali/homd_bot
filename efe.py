@@ -2,46 +2,47 @@ from random import randint
 from telegram.ext import Updater
 import os,logging
 from credentials import *
+import telegram.ext
 from time import time
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 
-def kick_efe(bot,context):
+def kick_efe(update, context):
     #get who issued this command
-    user = context.message.from_user.id
+    user = update.message.from_user.id
     #get homd's admins
-    admins = [admin.user.id for admin in bot.get_chat_administrators(chat_id=which_chat)]
+    admins = [admin.user.id for admin in context.bot.get_chat_administrators(chat_id=which_chat)]
     #check if this person is an admin
     if user in admins:
         #select one of few ban messages
-        username = context.message.from_user.first_name
+        username = update.message.from_user.first_name
         message_file = open('ban_messages.txt','r+')
         ban_messages = message_file.read().split('\n')
         message_file.close()
         ban_message=ban_messages[randint(0,len(ban_messages)-1)]
         #select efe
-        efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
+        efe = context.bot.getChatMember(chat_id=which_chat,user_id=189748641)
         #check if efe is available
         if efe.status in ['member','restricted']:
             try:
                 #kick him and unban him, so he can rejoin. Also send the ban message.
-                bot.kickChatMember(chat_id=which_chat,user_id=189748641)
-                bot.unbanChatMember(chat_id=which_chat,user_id=189748641)
-                bot.send_message(chat_id=which_chat,text=ban_message.format(username))
-                efe_tracker(bot, context)
+                context.bot.kickChatMember(chat_id=which_chat,user_id=189748641)
+                context.bot.unbanChatMember(chat_id=which_chat,user_id=189748641)
+                context.bot.send_message(chat_id=which_chat,text=ban_message.format(username))
+                efe_tracker(update, context)
             except:
                 return False
         else:
             #He's already gone.
-            bot.send_message(chat_id=which_chat,text="The dipshit is in another castle.")
+            context.bot.send_message(chat_id=which_chat,text="The dipshit is in another castle.")
     else:
         #Refuse if this person is not an admin.
-        bot.send_message(chat_id=which_chat,text="You're not an admin, fuckboy.")
+        context.bot.send_message(chat_id=which_chat,text="You're not an admin, fuckboy.")
 
 
 
-def efe_record(bot,context):
-    efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
+def efe_record(update, context):
+    efe = context.bot.getChatMember(chat_id=which_chat,user_id=189748641)
     record_file = open('record_file.txt', 'r')
     record_time = float(record_file.read())
     record_file.close()
@@ -50,9 +51,9 @@ def efe_record(bot,context):
     if rc_hour == 0: fmrc_hour=""
     else: fmrc_hour = f"{rc_hour} hours and " if rc_hour>1 else "an hour and "
     fmrc_minute = f"{rc_minute} minutes" if rc_minute>1 else "a minute"
-    bot.send_message(chat_id=which_chat,text=f"His record time is {fmrc_hour}{fmrc_minute}.")
+    context.bot.send_message(chat_id=which_chat,text=f"His record time is {fmrc_hour}{fmrc_minute}.")
 
-def efe_info(bot,context):
+def efe_info(context: telegram.ext.CallbackContext):
     if not os.path.exists('efe_file.txt'):
         efe_file = open('efe_file.txt','w+')
         efe_file.write(str(time()))
@@ -61,7 +62,7 @@ def efe_info(bot,context):
         record_file = open('record_file.txt','w+')
         record_file.write("0")
         record_file.close()
-    efe = bot.getChatMember(chat_id=which_chat,user_id=189748641)
+    efe = context.bot.getChatMember(chat_id=which_chat,user_id=189748641)
     efe_file = open('efe_file.txt', 'r')
     record_file = open('record_file.txt', 'r')
     record_time = float(record_file.read())
@@ -95,9 +96,9 @@ def efe_info(bot,context):
         efe_file.close()
         return False,fmrc_hour,fmrc_minute
 
-def efe_tracker(bot,context):
-    status,hour,minute = efe_info(bot,context)
+def efe_tracker(update, context):
+    status,hour,minute = efe_info(context)
     if status:
-        bot.send_message(chat_id=which_chat,text=f"Efe hasn't been kicked for {hour}{minute}.")
+        context.bot.send_message(chat_id=which_chat,text=f"Efe hasn't been kicked for {hour}{minute}.")
     else:
-        bot.send_message(chat_id=which_chat,text=f"Efe is gone. His record time is {hour}{minute}.")
+        context.bot.send_message(chat_id=which_chat,text=f"Efe is gone. His record time is {hour}{minute}.")

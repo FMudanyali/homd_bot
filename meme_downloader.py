@@ -1,15 +1,16 @@
 from tweepy import OAuthHandler,API,Cursor
 from credentials import *
+import telegram.ext
 import os
 
-def call_memes(bot,context):
+def call_memes(context: telegram.ext.CallbackContext):
     global access_key,access_key_secret,consumer_key,consumer_key_secret
     #initialize twitter
     auth = OAuthHandler(consumer_key, consumer_key_secret)
     auth.set_access_token(access_key, access_key_secret)
     api = API(auth)
     #call the meme downloading function
-    download_memes(bot,api,'track.txt','pages.txt',which_chat)
+    download_memes(context.bot,api,'track.txt','pages.txt',which_chat)
 
     print("Made a meme check.")
 
@@ -42,7 +43,7 @@ def download_memes(bot,api,track_txt,pages_txt,which_chat):
     #for each user in pages list
     for user in pages:
         #get first 10 tweets
-        new_tweets = api.user_timeline(screen_name = user,count=60)
+        new_tweets = api.user_timeline(screen_name = user,count=50)
         #for each tweet if these tweets are not in the track list
         for tweet in new_tweets:
             if str(tweet.id) not in track:

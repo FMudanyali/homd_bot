@@ -2,7 +2,7 @@ from telegram.ext import Updater,CommandHandler
 from efe import *
 from meme_downloader import *
 
-def videos_sent(bot,context):
+def videos_sent(update, context):
     global which_chat
     #read the track file
     print("Got track request.")
@@ -11,8 +11,8 @@ def videos_sent(bot,context):
     print(f"It's {videos}")
     videos_file.close()
     #get user name
-    user = context.message.from_user.first_name
-    bot.send_message(chat_id=which_chat,text=f"{videos} videos have been sent so far, {user}.")
+    user = update.message.from_user.first_name
+    context.bot.send_message(chat_id=which_chat,text=f"{videos} videos have been sent so far, {user}.")
     print("Sent track request.")
 
 def main():
